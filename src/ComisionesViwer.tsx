@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import * as XLSX from "xlsx";
 
 type Cliente = {
@@ -74,7 +74,7 @@ export default function ComisionesViewer() {
 
   const formatFee = (fee: any) => {
     if (fee.amount_type === 2) {
-      return `${Number(fee.amount) * 100}%`;
+      return `${Number(Number(fee.amount) * 100).toFixed(2)}%`;
     }
 
     return `$${fee.amount}`;
@@ -92,6 +92,7 @@ export default function ComisionesViewer() {
             <th>ID</th>
             <th>Cliente</th>
             <th>Tipo</th>
+            <th>Incoming</th>
             <th>Transfer</th>
             <th>Outcoming</th>
             <th>Heredado</th>
@@ -115,6 +116,14 @@ export default function ComisionesViewer() {
                 </td>
 
                 <td>{tipo}</td>
+
+                <td>
+                  {comision?.incoming?.fee_detail?.map((f: any) => (
+                    <div key={f.name}>
+                      {f.name}: {formatFee(f)}
+                    </div>
+                  ))}
+                </td>
 
                 <td>
                   {comision?.transfer?.fee_detail?.map((f: any) => (
